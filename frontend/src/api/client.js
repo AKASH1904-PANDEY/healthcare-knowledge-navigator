@@ -1,6 +1,6 @@
-// Thin wrapper around fetch for talking to the Express backend.
+﻿// Thin wrapper around fetch for talking to the Express backend.
 // Requests go to /api/... which Vite's dev proxy forwards to
-// http://localhost:8080 (see vite.config.js) — so no CORS setup needed
+// http://localhost:8080 (see vite.config.js) â€” so no CORS setup needed
 // and no hardcoded backend URL scattered through the app.
 
 const TOKEN_KEY = "healthcare_nav_token";
@@ -28,13 +28,13 @@ async function request(path, options = {}) {
     ...options.headers,
   };
 
-  const response = await fetch(`/api${path}`, { ...options, headers });
+  const response = await fetch(`${import.meta.env.VITE_API_URL || ""}/api${path}`, { ...options, headers });
 
   let data = null;
   try {
     data = await response.json();
   } catch {
-    // no JSON body — fine for some responses
+    // no JSON body â€” fine for some responses
   }
 
   if (!response.ok) {
@@ -59,3 +59,4 @@ export const api = {
   reviewSubmission: (id, body) =>
     request(`/submissions/${id}/review`, { method: "POST", body: JSON.stringify(body) }),
 };
+
